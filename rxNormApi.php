@@ -4,7 +4,7 @@
 class rxNormApi extends APIBaseClass{
 // would like to some day implement this in SOAP...
 
-        public static $api_url = 'http://rxnav.nlm.nih.gov/REST';
+        public static $api_url = 'https://rxnav.nlm.nih.gov/REST';
 
 	public $sourceTypes = Array
         (
@@ -37,7 +37,7 @@ class rxNormApi extends APIBaseClass{
 		'SNOMEDCT',
 		'SPL_SET_ID',
 		'UMLSCUI',
-		'UNII_CODE'
+		'UNII_CODE',
 		'VUID'
 	);
 
@@ -96,7 +96,7 @@ class rxNormApi extends APIBaseClass{
                 $this->rxcui = $rxcui;
         }
 
-        public function _request($path,$method,$data=NULL){
+        public function _request($path,$method,$data=false,$headers=false){
                 if ($this->output_type == 'json')
                         return parent::_request($path,$method,$data,"Accept:application/json");
                 else
@@ -125,7 +125,6 @@ class rxNormApi extends APIBaseClass{
                 if($allSourcesFlag != NULL ) $data['allsrc'] = $allSourcesFlag;
                 return self::_request("/rxcui?idtype=$idType&id=$id&allsrc=$allSourcesFlag",'GET');
         }
-
         public function getSpellingSuggestions( $searchString ){
                 return self::_request("/spellingsuggestions?name=$searchString",'GET');
         }
@@ -134,17 +133,29 @@ class rxNormApi extends APIBaseClass{
                 $rxcui = self::getRxcui($rxcui);
                 return self::_request('/rxcui/'.$rxcui.'/properties','GET');
         }
+        public function getNdcProperties( $ndc = NULL, $status = 'ALL') {
+                return self::_request("/ndcproperties?id={$ndc}&ndcstatus={$status}", 'GET');
+        }
+        public function getRxcuiProperty( $rxcui, $propName) {
+                $rxcui = self::getRxcui($rxcui);
+                return self::_request("/rxcui/{$rxcui}/property", 'GET', ['propName' => $propName]);
+        }
         public function getRelatedByRelationship( $relationship_list , $rxcui = NULL ){
                 $rxcui = self::getRxcui($rxcui);
                 return self::_request("/rxcui/$rxcui/related?rela=$relationship_list",'GET');
+        }
+        public function filterByProperty($rxcui, $propName, $propValues = '') {
+                $rxcui = self::getRxcui($rxcui);
+                //print "/rxcui/{$rxcui}/filter?propName={$propName}&propValues={$propValues}";
+                return self::_request("/rxcui/{$rxcui}/filter", 'GET', ['propName' => $propName, 'propValues' => $propValues]);
         }
         public function getRelatedByType($type_list, $rxcui = NULL ){
                 $rxcui = self::getRxcui($rxcui);
                 return self::_request("/rxcui/$rxcui/related?tty=$type_list",'GET');
         }
-        public function getAllRelatedInfo( $rxcui = NULL ){
+        public function getAllRelatedInfo( $rxcui = NULL, $expand = null ){
                 $rxcui = self::getRxcui($rxcui);
-                return self::_request("/rxcui/$rxcui/allrelated",'GET');
+                return self::_request("/rxcui/$rxcui/allrelated",'GET', ['expand' => $expand]);
         }
         public function getDrugs( $name ){
                 return self::_request("/drugs?name=$name",'GET');
@@ -154,7 +165,10 @@ class rxNormApi extends APIBaseClass{
                 $rxcui = self::getRxcui($rxcui);
                 return self::_request("/rxcui/$rxcui/ndcs",'GET');
         }
-
+        public function getRxNormName( $rxcui = NULL) {
+                $rxcui = self::getRxcui($rxcui);
+                return self::_request("/rxcui/{$rxcui}", 'GET');
+        }
         public function getRxNormVersion(){
                 return self::_request('/version','GET');
         }
