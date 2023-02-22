@@ -16,6 +16,11 @@
   "minimum-stability": "dev",
   "require": {
   },
+  "autoload": {
+    "psr-4": {
+        "RxNormApi\\": "classes/src/"
+    }
+},
   "extra": {
       "patches": {
       },
