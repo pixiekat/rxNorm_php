@@ -219,6 +219,11 @@ class rxNormApi extends APIBaseClass{
                 return self::_request("/rxcui/$rxcui/unii",'GET');
         }
 
+        public function getTerms( $rxcui = NULL ) {
+                $rxcui = self::getRxcui($rxcui);
+                return self::_request("/RxTerms/rxcui/$rxcui/allinfo", 'GET');
+        }
+
         public function getSplSetId( $idType,$id,$allsrc=NULL ){
 
                 $data['idtype'] = $idType;
