@@ -1,0 +1,27 @@
+{
+  "name": "pixiekat/rxnorm_php",
+  "type": "library",
+  "description": "A PHP implementation for the RxNorm API.",
+  "homepage": "",
+  "authors": [{
+      "name": "Katherine Elizabeth",
+      "homepage": "https://github.com/pixiekat",
+      "role": "Maintainer"
+  }],
+  "support": {
+      "issues": "https://github.com/pixiekat/rxnorm_php/issues",
+      "source": "https://github.com/pixiekat/rxnorm_php"
+  },
+  "license": "LGPL-3.0-only",
+  "minimum-stability": "dev",
+  "require": {
+  },
+  "extra": {
+      "patches": {
+      },
+      "enable-patching": true,
+      "composer-exit-on-patch-failure": false,
+      "patchLevel": {
+      }
+  }
+}
