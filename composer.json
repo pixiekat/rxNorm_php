@@ -17,9 +17,10 @@
   "require": {
   },
   "autoload": {
-    "psr-4": {
-        "RxNormApi\\": "classes/src/"
-    }
+    "files": [
+      "APIBaseClass.php",
+      "rxNormApi.php"
+    ]
 },
   "extra": {
       "patches": {
