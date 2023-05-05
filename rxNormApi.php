@@ -125,6 +125,10 @@ class rxNormApi extends APIBaseClass{
                 if($allSourcesFlag != NULL ) $data['allsrc'] = $allSourcesFlag;
                 return self::_request("/rxcui?idtype=$idType&id=$id&allsrc=$allSourcesFlag",'GET');
         }
+        public function getHistory($rxcui) {
+                $rxcui = self::getRxcui($rxcui);
+                return self::_request("/rxcui/{$rxcui}/historystatus", 'GET');
+        }
         public function getSpellingSuggestions( $searchString ){
                 return self::_request("/spellingsuggestions?name=$searchString",'GET');
         }
